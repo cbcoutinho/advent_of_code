@@ -2,7 +2,7 @@
 
 import pytest
 
-from main import solve_captcha
+from main import solve_captcha, solve_captcha2
 
 @pytest.mark.parametrize(
     'num,out', [
@@ -13,3 +13,14 @@ from main import solve_captcha
     ])
 def test_solve_captcha(num, out):
     assert solve_captcha(num) == out
+
+@pytest.mark.parametrize(
+    'num, out', [
+        ('1212', 6),
+        ('1221', 0),
+        ('123425', 4),
+        ('123123', 12),
+        ('12131415', 4),
+    ])
+def test_solve_captcha2(num, out):
+    assert solve_captcha2(num) == out
