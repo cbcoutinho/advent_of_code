@@ -2,7 +2,8 @@
   (:gen-class))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Loop through `args` and convert string of numbers into a list of
+  integers"
   [& args]
-  (println "Hello, World!")
-  (println args))
+  (doseq [arg args]
+    (println (map #(Character/getNumericValue %) arg))))
