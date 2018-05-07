@@ -43,4 +43,4 @@
 (defn -main
   "Wrap count-valid with a main function"
   [filename & args]
-  (count-valid filename))
+  (println (count-valid filename)))
