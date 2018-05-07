@@ -13,3 +13,9 @@
     (is (=
           (valid-passphrase '("aa" "bb" "cc" "dd" "aaa"))
           true))))
+
+(deftest part1-test
+  (testing "Part 1 of day 4"
+    (is (= 
+          (count-valid "../passphrases.txt")
+          477))))
