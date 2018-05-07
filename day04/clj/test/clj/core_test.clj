@@ -2,6 +2,14 @@
   (:require [clojure.test :refer :all]
             [clj.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest readme-test
+  (testing "Checks passphrase validity for passphrases from the README"
+    (is (= 
+          (valid-passphrase '("aa" "bb" "cc" "dd" "ee"))
+          true))
+    (is (=
+          (valid-passphrase '("aa" "bb" "cc" "dd" "aa"))
+          false))
+    (is (=
+          (valid-passphrase '("aa" "bb" "cc" "dd" "aaa"))
+          true))))
