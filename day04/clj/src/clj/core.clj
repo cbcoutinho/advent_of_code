@@ -29,6 +29,13 @@
   [coll]
   (apply distinct? coll))
 
+(defn valid-passphrase2
+  "Checks if a passphrase is valid - returns true if collection
+  contains only distinct values _including anagrams_."
+  [coll]
+  (apply distinct? (map sort coll)))
+
+
 (defn count-valid
   "Count valid passphrases in a collection of passphrases.
 
@@ -36,9 +43,16 @@
   it uses the parse-file1 function"
   ([filename] (count-valid filename parse-file1))
   ([filename parse-fn]
-   (count (filter 
+   (count (filter
             valid-passphrase
             (parse-fn filename)))))
+
+(defn count-valid2
+  "Same as count-valid, but using valid-passphrase2"
+  [filename]
+  (count (filter
+           valid-passphrase2
+           (parse-file1 filename))))
 
 (defn -main
   "Wrap count-valid with a main function"
