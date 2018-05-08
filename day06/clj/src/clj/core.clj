@@ -56,7 +56,7 @@
   cycle loops"
   [coll]
   (let 
-    [start-end (first-duplicate (iterate redistribute blocks))]
+    [start-end (first-duplicate (iterate redistribute coll))]
     (- (apply max start-end) (apply min start-end))))
 
 (defn -main
