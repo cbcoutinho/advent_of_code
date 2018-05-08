@@ -16,4 +16,8 @@
     (is (=
           (count-jump-offsets
             (parse-file "../offsets.txt"))
-          376976))))
+          376976))
+    (is (=
+          (count-jump-offsets2
+            (parse-file "../offsets.txt"))
+          29227751))))

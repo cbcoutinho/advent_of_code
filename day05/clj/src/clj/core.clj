@@ -12,32 +12,36 @@
     (map #(read-string %) f)  ; Read string into Clojure (ie. `ints`)
     (vec f)))                 ; Convert to `vec`
 
-(defn inc-nth
-  "Increment the nth element in a collection"
-  [coll idx]
-  (assoc coll idx
-         (inc (nth coll idx))))
+;; Use a single function creator for inc-nth and dec-nth
+(defn alter-nth
+  "Create a function that alters a collection using a function"
+  [f]
+  (fn [coll idx]
+    (assoc coll idx
+           (f (nth coll idx)))))
 
-(defn dec-nth
-  "Decrement the nth element in a collection"
+;; Create inc-nth and dec-nth functions
+(def inc-nth (alter-nth inc))
+(def dec-nth (alter-nth dec))
+
+(defn out-of-bounds?
+  "Check if idx is out of bounds for coll"
   [coll idx]
-  (assoc coll idx
-         (dec (nth coll idx))))
+  (or                       ; Check if index is out of bounds
+    (< idx 0)               ; Less than zero
+    (>= idx (count coll)))) ; Greater than/equal to length
 
 (defn count-jump-offsets
   "Count number of jump offsets required to exit a collection"
   ([coll] ; Use arity to set initial conditions
    (count-jump-offsets coll 0 0))
   ([coll idx out]
-   (if
-     (or ; Check if index falls outside of range
-       (< idx 0) ; less than zero
-       (>= idx (count coll))) ; greater than/equal to length
+   (if (out-of-bounds? coll idx)
      out
-     (recur ; Call count-jump-offsets again with `updated` values
-       (inc-nth coll idx) ; Increment the coll at index idx
+     (recur                   ; Call count-jump-offsets again with `updated` values
+       (inc-nth coll idx)     ; Increment the coll at index idx
        (+ idx (nth coll idx)) ; Jump with offset at index
-       (inc out))))) ; Increment number of jumps
+       (inc out)))))          ; Increment number of jumps
 
 (defn count-jump-offsets2
   "Count number of jump offsets required to exit a collection
@@ -47,10 +51,7 @@
   ([coll]
    (count-jump-offsets2 coll 0 0))
   ([coll idx out]
-   (if
-     (or
-       (< idx 0)
-       (>= idx (count coll)))
+   (if (out-of-bounds? coll idx)
      out
      (recur
        (if (>= (nth coll idx) 3)
