@@ -1,4 +1,11 @@
 (ns clj.core
   (:gen-class))
 
-(def my-next)
+(defn sqr
+  "Calcuates square of a number"
+  [n]
+  (* n n))
+
+(def corners
+  (map sqr (iterate (partial + 2) 1)))
+
