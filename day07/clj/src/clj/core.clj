@@ -47,14 +47,27 @@
     (set (flatten (remove nil?
                           (map #(get % k) coll))))))
 
-(def get-children (get-key :children))
-(def get-names (get-key :name))
+(def get-all-children (get-key :children))
+(def get-all-names (get-key :name))
 
 (defn find-parent
   [tree]
-  (let [names (get-names tree)
-        children (get-children tree)]
+  (let [names (get-all-names tree)
+        children (get-all-children tree)]
     (first (difference names children))))
+
+(defn get-children
+  [coll node]
+  (apply :children (filter #(= (:name %) node) coll)))
+
+(defn get-weight
+  [coll node]
+  (apply :weight (filter #(= (:name %) node) coll)))
+
+(defn get-name
+  [coll node]
+  (apply :name (filter #(= (:name %) node) coll)))
+
 
 (defn -main
   "I don't do a whole lot ... yet."
