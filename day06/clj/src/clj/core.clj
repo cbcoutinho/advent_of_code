@@ -51,6 +51,13 @@
   [coll]
   (second (first-duplicate (iterate redistribute coll))))
 
+(defn loop-size
+  "Calcuates the number of block redistribution cycles required between
+  cycle loops"
+  [coll]
+  (let 
+    [start-end (first-duplicate (iterate redistribute blocks))]
+    (- (apply max start-end) (apply min start-end))))
 
 (defn -main
   "I don't do a whole lot ... yet."
