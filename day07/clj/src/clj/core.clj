@@ -3,7 +3,6 @@
   (:require [clojure.string :as s]
             [clojure.set :refer [difference]]))
 
-
 (defn tokenize-line
   [line]
   (-> line                ; From input line as string ...
@@ -15,30 +14,29 @@
   "Parse collection into hash-map with keys 'node', 'weight', and
   optionally, 'children'"
   ([n w]
-   ;(println n w))
    {:name n :weight w})
   ([n w & c]
    {:name n :weight w :children c}))
 
 (defn parse-line
-  "Parse line into a collection of hash-maps"
+  "Parse line into a hash-map"
   [line]
   (let [coll (tokenize-line line)] ; Tokenize input string into vector
     (apply create-hash-map         ; Create hash-map of parsed input
-      (assoc coll                  ; Associate collection
-        1                          ; at index 1 ...
-        (-> coll                   ; From collection ...
-            second                 ; take second string
-            read-string            ; read string
-            first)))))             ; return first value
+           (assoc coll             ; Associate collection
+                  1                ; at index 1 ...
+                  (-> coll         ; From collection ...
+                      second       ; take second string
+                      read-string  ; read string -> returns a list
+                      first)))))   ; return first/inner value of list
 
 (defn parse-file
   "Parse file into a collection of hash-maps"
   [filename]
   (map parse-line
-    (-> filename
-        slurp
-        s/split-lines)))
+       (-> filename
+           slurp
+           s/split-lines)))
 
 ;; Create functions for getting set of all keys
 (defn get-key
@@ -67,7 +65,6 @@
 (defn get-name
   [coll node]
   (apply :name (filter #(= (:name %) node) coll)))
-
 
 (defn -main
   "I don't do a whole lot ... yet."
