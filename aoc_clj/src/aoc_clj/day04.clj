@@ -1,25 +1,12 @@
 (ns aoc-clj.day04
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            [aoc-clj.core :as core]))
 
-(defn parse-file1
-  "Uses threading first macro `->`, which assumes input to each
-  function is first arguement after function symbol - (fn arg1 ...).
-  This forces `map` outside of threading macro because map needs
-  its arguement (actually a collection) at the end - (map fn arg1)"
+(defn parse-file
   [filename]
-  (map #(s/split % #" ")
-       (-> filename
-           slurp
-           s/split-lines)))
-
-(defn parse-file2
-  "Use clever as-> threading macro instead of -> to more explicitly
-  place arguments either at front or back of form"
-  [filename]
-  (as-> filename f
-    (slurp f)
-    (s/split-lines f)
-    (map #(s/split % #" ") f)))
+  (map
+   #(s/split % #" ")
+   (core/file->lines filename)))
 
 (defn valid-passphrase
   "Checks if a passphrase is valid - returns true if collection
@@ -29,24 +16,23 @@
 
 (defn valid-passphrase2
   "Checks if a passphrase is valid - returns true if collection
-  contains only distinct values _including anagrams_."
+  contains only distinct values _including anagrams_. This means that 
+  each string is sorted to compare combinations, not just permutations"
   [coll]
   (apply distinct? (map sort coll)))
 
 (defn count-valid
-  "Count valid passphrases in a collection of passphrases.
-
-  Optionally allow to use a different parse-file function - by default
-  it uses the parse-file1 function"
-  ([filename] (count-valid filename parse-file1))
-  ([filename parse-fn]
-   (count (filter
-           valid-passphrase
-           (parse-fn filename)))))
+  "Count valid passphrases in a collection of passphrases"
+  [filename]
+  (->> filename
+       parse-file
+       (filter valid-passphrase)
+       count))
 
 (defn count-valid2
   "Same as count-valid, but using valid-passphrase2"
   [filename]
-  (count (filter
-          valid-passphrase2
-          (parse-file1 filename))))
+  (->> filename
+       parse-file
+       (filter valid-passphrase2)
+       count))

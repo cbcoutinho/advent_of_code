@@ -1,22 +1,21 @@
 (ns aoc-clj.day05
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            [aoc-clj.core :as core]))
 
 (defn parse-file
   "Parses file into list of numbers"
   [filename]
-  (as-> filename f
-    (slurp f)                 ; Slurp file contents into memory
-    (s/split-lines f)         ; Split input at line breaks
-    (map #(read-string %) f)  ; Read string into Clojure (ie. `ints`)
-    (vec f)))                 ; Convert to `vec`
+  (->> filename
+       core/file->lines       ; Read file into vector of lines
+       (map #(read-string %)) ; Read string into Clojure (ie. `ints`)
+       vec))                  ; Convert to `vec`
 
 ;; Use a single function creator for inc-nth and dec-nth
 (defn alter-nth
   "Create a function that alters a collection using a function"
   [f]
   (fn [coll idx]
-    (assoc coll idx
-           (f (nth coll idx)))))
+    (assoc coll idx (f (nth coll idx)))))
 
 ;; Create inc-nth and dec-nth functions
 (def inc-nth (alter-nth inc))

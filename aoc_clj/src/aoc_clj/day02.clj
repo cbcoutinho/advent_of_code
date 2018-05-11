@@ -1,13 +1,11 @@
-(ns aoc-clj.day02)
+(ns aoc-clj.day02
+  (:require [aoc-clj.core :as core]))
 
 (defn parse-file
   "Parse a file containing lines of integers into a list of lists"
   [filename]
-  (let [vec-lines (-> filename
-                      slurp
-                      clojure.string/split-lines)]
-    (map #(read-string (str "(" % ")"))
-         vec-lines)))
+  (map #(read-string (str "(" % ")"))
+       (core/file->lines filename)))
 
 (defn sum-max-min
   [my-list]
@@ -40,5 +38,5 @@
   the whole number that results of dividing one number by another.
   There should only be one per line."
   [list-of-lists]
-  (reduce + (flatten
-             (map whole-divisor list-of-lists))))
+  (reduce +
+          (flatten (map whole-divisor list-of-lists))))

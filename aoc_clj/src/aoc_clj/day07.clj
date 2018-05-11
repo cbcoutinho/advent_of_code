@@ -1,6 +1,7 @@
 (ns aoc-clj.day07
   (:require [clojure.string :as s]
-            [clojure.set :refer [difference]]))
+            [clojure.set :refer [difference]]
+            [aoc-clj.core :as core]))
 
 (defn tokenize-line
   [line]
@@ -23,7 +24,7 @@
   (let [coll (tokenize-line line)] ; Tokenize input string into vector
     (apply create-hash-map         ; Create hash-map of parsed input
            (assoc coll             ; Associate collection
-                  1                ; at index 1 ...
+                  1                ; at index 1 with ...
                   (-> coll         ; From collection ...
                       second       ; take second string
                       read-string  ; read string -> returns a list
@@ -32,10 +33,9 @@
 (defn parse-file
   "Parse file into a collection of hash-maps"
   [filename]
-  (map parse-line
-       (-> filename
-           slurp
-           s/split-lines)))
+  (->> filename
+       core/file->lines
+       (map parse-line)))
 
 ;; Create functions for getting set of all keys
 (defn get-key
