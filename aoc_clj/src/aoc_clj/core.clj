@@ -14,3 +14,10 @@
   (fn [coll idx]
     (assoc coll idx
            (f (nth coll idx)))))
+
+(defmacro infix
+  "Converts infix notation (1 + 1) to Polish notation (+ 1 1)"
+  [form]
+  (list (second form)
+        (first form)
+        (last form)))
