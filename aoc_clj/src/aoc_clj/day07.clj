@@ -12,10 +12,13 @@
        (map util/parse-line)))
 
 (defn find-parent
+  "Determines the tree parent, which is defined as the node contained
+  in the `names`, but not in the `children`"
   [tree]
   (let [names (util/get-all-names tree)
         children (util/get-all-children tree)]
-    (first (difference names children))))
+    (first
+     (difference names children))))
 
 (defn build-tree
   [lines]
