@@ -2,9 +2,25 @@
   (:require [aoc-clj.core :as core]
             [clojure.string :as s]))
 
+(defn cond->vec
+  "Converts the string conditional into a vector, and then
+  swaps the first and second elements"
+  [c]
+  (-> c
+      (s/split #" ") ; Split conditional string on white space
+      ((fn [c]       ; Associate the last string as an integer
+         (assoc
+          c
+          2 (Integer/parseInt (last c)))))
+      ((fn [c]       ; Swap the first and second elements of the vector
+         (assoc
+          c
+          1 (first c)
+          0 (second c))))))
+
 (defn parse-line
-  "Associates a single line instruction with an operation on the
-  register hashmap object"
+  "Parses a single line instruction into a vector of strings, each
+  representing a register, instruction, and conditional"
   [line]
   (->> line        ; Start with line
        (re-matches ; Match groups on first word, operation, number, and condition
@@ -22,8 +38,8 @@
          (assoc acc k 0)
          acc))
      registers   ; Starting from the original map
-     [reg        ; First register in string
-      (-> c      ; Register contained in the conditional
+     [reg        ; First register in parsed string
+      (-> c      ; Register contained in the conditional - assumed to be first
           (s/split #" ")
           first)])))
 
