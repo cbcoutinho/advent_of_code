@@ -3,7 +3,7 @@
             [aoc-clj.day08 :refer :all]))
 
 (deftest readme-test
-  (testing "Examples from the README"
+  (testing "Examples from the README - essentially doing each step one-by-one"
     (is (=
          (update-registers {} "b inc 5 if a > 1")
          {"a" 0 "b" 0}))
