@@ -8,19 +8,24 @@
   [line]
   (->> line        ; Start with line
        (re-matches ; Match groups on first word, operation, number, and condition
-        #"([a-zA-Z]*)\s+(inc|dec)\s+(\d+)\s+if\s+(.*)")
-       rest))      ; Return everything besides the first element
+        #"(\w+)\s+(inc|dec)\s+(\d+)\s+if\s+(.*)")
+       rest))      ; Return everything besides the first element (original string)
 
-(defn myfun
+(defn assoc-zero
+  "This function associates missing keys in a map with zero
+  doesn't exist - otherwise just return the original map"
   [registers line]
-  (let [k (-> line
-              parse-line
-              last
-              (clojure.string/split #" ")
-              first)]
-    (if (nil? (get registers k))
-      (assoc registers k 0)
-      registers)))
+  (let [[reg op n c] (parse-line line)]
+    (reduce
+     (fn [acc k] ; Associate all missing keys with zeros
+       (if-not (contains? acc k)
+         (assoc acc k 0)
+         acc))
+     registers   ; Starting from the original map
+     [reg        ; First register in string
+      (-> c      ; Register contained in the conditional
+          (s/split #" ")
+          first)])))
 
 (defn update-registers
   "Applies register instruction to registers hashmap"
