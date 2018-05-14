@@ -26,7 +26,13 @@
          (-> "../day08/input.txt"
              parse-file
              max-register)
-         4647))))
+         4647))
+
+    (is (=
+         (-> "../day08/input.txt"
+             parse-file-max-each
+             second)
+         5590))))
 
 (deftest assoc-zero-test
   (testing "Confirm lines are parsed and registers correctly set"

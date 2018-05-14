@@ -57,6 +57,18 @@
      registers      ; Starting from the original map
      [reg1 reg2]))) ; Loop over the two input registers in instruction
 
+(defn max-register
+  "Calculates the maximum register value"
+  [registers]
+  (reduce                       ; Loop through map and hold onto max value
+   (fn [acc [k v]]
+     (max acc v))
+   (let [start (-> registers first second)]
+     (if (nil? start)
+       0       ; Start max at zero if empty
+       start)) ; Start max at value of first key entry
+   (rest registers)))          ; Send the rest of the key/val pairs through reduce
+
 (defn apply-update
   "Updates register map based on operation and conditional in line"
   [registers line]
@@ -87,11 +99,14 @@
         update-registers ; Loop through the register map and update them one-by-one
         {})))            ; Start with an empty register map
 
-(defn max-register
-  "Calculates the maximum register value"
-  [registers]
-  (reduce                       ; Loop through map and hold onto max value
-   (fn [acc [k v]]
-     (max acc v))
-   (-> registers first second) ; Start max at value of first key entry
-   (rest registers)))          ; Send the rest of the key/val pairs through reduce
+(defn parse-file-max-each
+  "Essentially the same as max-register, except calculates it on each iteration"
+  [filename]
+  (->> filename
+       core/file->lines
+       (reduce
+        (fn [[acc max-reg] line]
+          (vector
+           (update-registers acc line)
+           (max (max-register acc) max-reg)))
+        [{} 0])))
