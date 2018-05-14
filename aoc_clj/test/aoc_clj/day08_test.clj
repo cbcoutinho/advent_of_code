@@ -6,11 +6,27 @@
   (testing "Examples from the README"
     (is (=
          (update-registers {} "b inc 5 if a > 1")
-         {"a" 0 "b" 0}))))
-    ;(is (=
-         ;(max-register
-          ;(aoc-clj.core/file->lines "../day08/sample.txt"))
-         ;1))))
+         {"a" 0 "b" 0}))
+    (is (=
+         (update-registers {"a" 0 "b" 0} "a inc 1 if b < 5")
+         {"a" 1 "b" 0}))
+    (is (=
+         (update-registers {"a" 1 "b" 0} "c dec -10 if a >= 1")
+         {"a" 1 "b" 0 "c" 10}))
+    (is (=
+         (update-registers {"a" 1 "b" 0 "c" 10} "c inc -20 if c == 10")
+         {"a" 1 "b" 0 "c" -10}))
+
+    (is (=
+         (-> "../day08/sample.txt"
+             parse-file
+             max-register)
+         1))
+    (is (=
+         (-> "../day08/input.txt"
+             parse-file
+             max-register)
+         4647))))
 
 (deftest assoc-zero-test
   (testing "Confirm lines are parsed and registers correctly set"

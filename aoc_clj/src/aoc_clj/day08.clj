@@ -20,53 +20,72 @@
 
 (defn parse-line
   "Parses a single line instruction into a vector of strings, each
-  representing a register, instruction, and conditional"
+  representing a register, instruction, and conditional
+
+  Make sure to allow +/- signs in regex, drawing from this answer
+  for inspiration:
+    https://stackoverflow.com/a/30619026/5536001"
   [line]
   (->> line        ; Start with line
        (re-matches ; Match groups on first word, operation, number, and condition
-        #"(\w+)\s+(inc|dec)\s+(\d+)\s+if\s+(.*)")
+        #"(\w+)\s+(inc|dec)\s+([+\-\d]+)\s+if\s+(.*)")
        rest))      ; Return everything besides the first element (original string)
+
+(defn check-cond
+  "Checks string conditional against known registers"
+  [registers c]
+  (let [v (cond->vec c)
+        op (case (-> v first)
+             ">" > ">=" >=
+             "<" < "<=" <=
+             "==" = "!=" not=)]
+    (op
+     (get registers (second v))
+     (last v))))
 
 (defn assoc-zero
   "This function associates missing keys in a map with zero
   doesn't exist - otherwise just return the original map"
   [registers line]
-  (let [[reg op n c] (parse-line line)]
+  (let [[reg1 op n c] (parse-line line)
+        [_ reg2 _] (cond->vec c)]
     (reduce
-     (fn [acc k] ; Associate all missing keys with zeros
+     (fn [acc k]    ; Associate all missing keys with zeros
        (if-not (contains? acc k)
          (assoc acc k 0)
          acc))
-     registers   ; Starting from the original map
-     [reg        ; First register in parsed string
-      (-> c      ; Register contained in the conditional - assumed to be first
-          (s/split #" ")
-          first)])))
+     registers      ; Starting from the original map
+     [reg1 reg2]))) ; Loop over the two input registers in instruction
+
+(defn apply-update
+  "Updates register map based on operation and conditional in line"
+  [registers line]
+  (let [[reg op n c] (parse-line line)
+        op (case op                  ; Converts the string operation to clojure function
+             "inc" +
+             "dec" -)]
+    (if (check-cond registers c)     ; Evaluates conditional
+      (assoc registers reg           ; Associates register value ...
+             (op                     ; by using the operator
+              (get registers reg)    ; on the current register value
+              (Integer/parseInt n))) ; and the value in the instruction
+      registers)))
 
 (defn update-registers
-  "Applies register instruction to registers hashmap"
+  "Applies instruction to register hashmap"
   [registers line]
   (-> registers
-      (assoc-zero line)))
-
-(defn lines->regmaps
-  "Converts lines to hashmap of registers (keys) and operations (values)"
-  [lines]
-  (reduce
-   (fn [acc [idx & x]]
-     (let [v (get acc idx)]
-       (do
-         (println idx)
-         (assoc acc idx v))))
-   {}
-   (map #(parse-line %) lines)))
+      (assoc-zero line)
+      (apply-update line)))
 
 (defn parse-file
   "Parse input file of register instructions"
   [filename]
   (->> filename
-       core/file->lines
-       lines->regmaps))
+       core/file->lines  ; Convert file into a vector of strings
+       (reduce
+        update-registers ; Loop through the register map and update them one-by-one
+        {})))            ; Start with an empty register map
 
 (defn max-register
   "Calculates the maximum register value"
