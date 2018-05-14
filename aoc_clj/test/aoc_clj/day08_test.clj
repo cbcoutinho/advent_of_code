@@ -6,12 +6,11 @@
   (testing "Examples from the README"
     (is (=
          (update-registers {} "b inc 5 if a > 1")
-         {"a" 0 "b" 0}))
-    (is (=
-         (max-register
-           ;(parse-file "../day08/sample.txt")
-          (aoc-clj.core/file->lines "../day08/sample.txt"))
-         1))))
+         {"a" 0 "b" 0}))))
+    ;(is (=
+         ;(max-register
+          ;(aoc-clj.core/file->lines "../day08/sample.txt"))
+         ;1))))
 
 (deftest assoc-zero-test
   (testing "Confirm lines are parsed and registers correctly set"
@@ -23,4 +22,14 @@
       (for [[reg-map expected] test-cases]
         (is (=
              (assoc-zero reg-map line)
+             expected))))))
+
+(deftest max-register-test
+  (testing "Maximum register calculation"
+    (let [test-cases [[{"a" 2} 2]
+                      [{"a" 0 "b" 1} 1]
+                      [{"a" 2 "b" 0} 2]]]
+      (for [[input expected] test-cases]
+        (is (=
+             (max-register input)
              expected))))))

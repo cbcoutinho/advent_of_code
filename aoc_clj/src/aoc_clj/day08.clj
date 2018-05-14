@@ -30,8 +30,8 @@
 (defn update-registers
   "Applies register instruction to registers hashmap"
   [registers line]
-  (if (empty? registers)
-    {"a" 0 "b" 0}))
+  (-> registers
+      (assoc-zero line)))
 
 (defn lines->regmaps
   "Converts lines to hashmap of registers (keys) and operations (values)"
@@ -55,4 +55,8 @@
 (defn max-register
   "Calculates the maximum register value"
   [registers]
-  1)
+  (reduce                       ; Loop through map and hold onto max value
+   (fn [acc [k v]]
+     (max acc v))
+   (-> registers first second) ; Start max at value of first key entry
+   (rest registers)))          ; Send the rest of the key/val pairs through reduce
