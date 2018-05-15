@@ -8,7 +8,7 @@
                       ["1111" 4]
                       ["1234" 0]
                       ["91212129" 9]]]
-      (for [[value expected] test-cases]
+      (doseq [[value expected] test-cases]
         (is (solve-captcha1 value) expected)))))
 
 (deftest captcha2
@@ -18,5 +18,5 @@
                       ["123425" 4]
                       ["123123" 12]
                       ["12131415" 4]]]
-      (for [[value expected] test-cases]
+      (doseq [[value expected] test-cases]
         (is (solve-captcha2 value) expected)))))

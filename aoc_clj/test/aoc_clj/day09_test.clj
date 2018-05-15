@@ -4,6 +4,9 @@
 
 (deftest readme-test
   (testing "Examples from README"
+    ;(is (=
+         ;(count-groups (seq "{}"))
+         ;1))
     (let [test-cases [["{}" 1]
                       ["{{{}}}" 6]
                       ["{{},{}}" 5]
@@ -12,7 +15,7 @@
                       ["{{<ab>},{<ab>},{<ab>},{<ab>}}" 9]
                       ["{{<!!>},{<!!>},{<!!>},{<!!>}}" 9]
                       ["{{<a!>},{<a!>},{<a!>},{<ab>}}" 3]]]
-      (for [[input expected] test-cases]
+      (doseq [[input expected] test-cases]
         (is (=
-             (count-groups input)
+             (count-groups (seq input))
              expected))))))

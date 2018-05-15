@@ -41,7 +41,7 @@
                       [{"a" 0} {"a" 0 "b" 0}]
                       [{"a" 2} {"a" 2 "b" 0}]
                       [{"c" 2} {"a" 0 "b" 0 "c" 2}]]]
-      (for [[reg-map expected] test-cases]
+      (doseq [[reg-map expected] test-cases]
         (is (=
              (assoc-zero reg-map line)
              expected))))))
@@ -51,7 +51,7 @@
     (let [test-cases [[{"a" 2} 2]
                       [{"a" 0 "b" 1} 1]
                       [{"a" 2 "b" 0} 2]]]
-      (for [[input expected] test-cases]
+      (doseq [[input expected] test-cases]
         (is (=
              (max-register input)
              expected))))))
