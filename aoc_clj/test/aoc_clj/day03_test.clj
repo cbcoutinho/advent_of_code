@@ -8,5 +8,5 @@
                       ;[12 3]
                       ;[23 23]
                       ;[1024 31]]]
-      ;(for [[value expected] test-cases]
+      ;(doseq [[value expected] test-cases]
         ;(is (num-steps-carry-data value) expected)))))
