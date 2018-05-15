@@ -24,11 +24,13 @@
 
   Make sure to allow +/- signs in regex, drawing from this answer
   for inspiration:
-    https://stackoverflow.com/a/30619026/5536001"
+    https://stackoverflow.com/a/30619026/5536001
+  And these docs:
+    https://clojure.org/reference/other_functions#regex"
   [line]
   (->> line        ; Start with line
        (re-matches ; Match groups on first word, operation, number, and condition
-        #"(\w+)\s+(inc|dec)\s+([+\-\d]+)\s+if\s+(.*)")
+        #"(\w+)\s+(inc|dec)\s+([+-]?[0-9]+)\s+if\s+(.*)")
        rest))      ; Return everything besides the first element (original string)
 
 (defn check-cond

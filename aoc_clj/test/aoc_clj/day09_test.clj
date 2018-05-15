@@ -4,9 +4,6 @@
 
 (deftest readme-test
   (testing "Examples from README"
-    ;(is (=
-         ;(count-groups (seq "{}"))
-         ;1))
     (let [test-cases [["{}" 1]
                       ["{{{}}}" 6]
                       ["{{},{}}" 5]
@@ -18,4 +15,17 @@
       (doseq [[input expected] test-cases]
         (is (=
              (count-groups (seq input))
+             expected)))))
+
+  (testing "Examples from part 2 of README"
+    (let [test-cases [["<>" 0]
+                      ["<random characters>" 17]
+                      ["<<<<>" 3]
+                      ["<{!>}>" 2]
+                      ["<!!>" 0]
+                      ["<!!!>>" 0]
+                      ["<{o\"i!a,<{i<a>" 10]]]
+      (doseq [[input expected] test-cases]
+        (is (=
+             (count-garbage (seq input))
              expected))))))

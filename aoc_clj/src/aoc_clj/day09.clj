@@ -2,38 +2,42 @@
   (:require [aoc-clj.core :as core]
             [clojure.string :as s]))
 
-(defn valid?
-  [c]
-  (case c
-    \{ true
-    \} true
-    false))
-
-(defn iterate-seq
+(defn iterate-chars
   [input]
   (reduce
-   (fn [[acc lvl prev garb?] c]
-     ;(println acc lvl prev garb? c)
-     (if (= prev \!)
-       [acc lvl nil garb?]
-       (if (and garb?
-                (not= c \>))
-         [acc lvl c garb?]
-         (if (= c \<)
-           [acc lvl c true]
-           (case c
-             \> [acc lvl c false]
-             \{ [acc (inc lvl) c garb?]
-             \} [(+ acc lvl) (dec lvl) c garb?]
-             [acc lvl c garb?])))))
-         ;(if (or ; Check if any the following are true to get out of garbage
-            ;garb?  ; Are we in a garbage zone?
-            ;(not= prev \!))) ; Are we going to cancel the following letter?
-   [0 0 nil false]
+   (fn [[acc                                    ; Accumulated total
+         lvl                                    ; Current brace level
+         prev                                   ; Previous character - or nil if was precided by \!
+         garb?                                  ; Boolean - if in garbage patch or not
+         acc-garb]
+        c]                                      ; Next char in sequence
+
+     (if (= prev \!)                            ; If prev char is !
+       [acc lvl nil garb? acc-garb]                      ; Set new prev to nil and continue
+
+       (if (and garb?                           ; If both in garbage zone ...
+                (not= c \>))                    ; And not the end of garbage zone ...
+         (if (not= c \!)
+           [acc lvl c garb? (inc acc-garb)]                      ; Just continue
+           [acc lvl c garb? acc-garb])                      ; Just continue
+
+         (if (= c \<)                           ; If start garbage zone ...
+           [acc lvl c true acc-garb]                     ; Set garb? to true
+
+           (case c                              ; Otherwise use a catch block
+             \> [acc lvl c false acc-garb]               ; End garbage
+             \{ [acc (inc lvl) c garb? acc-garb]         ; Start new level
+             \} [(+ acc lvl) (dec lvl) c garb? acc-garb] ; End level
+             [acc lvl c garb? acc-garb])))))             ; Assume just basic character
+   [0 0 nil false 0]
    input))
 
 (defn count-groups
   [input]
-  (first (iterate-seq input)))
+  (first ; Return only accumulated total
+   (iterate-chars input)))
 
-  ;(println input))
+(defn count-garbage
+  [input]
+  (last
+   (iterate-chars input)))
