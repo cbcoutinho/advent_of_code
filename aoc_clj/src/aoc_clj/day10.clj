@@ -1,4 +1,5 @@
-(ns aoc-clj.day10)
+(ns aoc-clj.day10
+  (:require [aoc-clj.day10.util :as util]))
 
 (defn my-subvec
   "Create a subvec that wraps around the original vector"
@@ -8,7 +9,8 @@
    (range start end)))
 
 (defn reverse-partition
-  "Reverse the elements of a subset of a vector"
+  "Calcuate the next 'knot' in the sequence by reversing the
+  elements in a subset of the vector"
   [rng pos len]
   (reduce
    (fn [acc [idx n]]
@@ -24,20 +26,22 @@
          (+ pos len))
         reverse))))                ; And reverse the elements
 
-(defn next-knot
-  "Calcuate the next 'knot' in the sequence"
-  [rng pos len]
-  (reverse-partition rng pos len))
+(defn calc-knot
+  [size lengths]
+  (reduce
+   (fn [[acc pos skip] length]
+     [(next-knot acc pos length)
+      (-> (+ pos length skip)
+          (mod size))
+      (inc skip)])
+   [(into [] (range size)) 0 0]
+   lengths))
 
 (defn knot-hash
   "Calculates the cryptographic knot-hash"
   [size lengths]
-  (let [[knot _ _] (reduce
-                    (fn [[acc pos skip] length]
-                      [(reverse-partition acc pos length)
-                       (-> (+ pos length skip)
-                           (mod size))
-                       (inc skip)])
-                    [(into [] (range size)) 0 0]
-                    lengths)]
-    (* (first knot) (second knot))))
+  (let [knot (first
+              (calc-knot size lengths))]
+    (*
+     (first knot)
+     (second knot))))
