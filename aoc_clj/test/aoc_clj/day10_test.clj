@@ -23,6 +23,20 @@
          (knot-hash 5 [3 4 1 5])
          12)))
 
+  (testing "Example for part2 from README"
+    (is (=
+         (knot-hash2 "")
+         "a2582a3a0e66e6e86e3812dcb672a272"))
+    (is (=
+         (knot-hash2 "AoC 2017")
+         "33efeb34ea91902bb2f59c9920caa6cd"))
+    (is (=
+         (knot-hash2 "1,2,3")
+         "3efbe78a8d82f29979031a4aa0b16a9d"))
+    (is (=
+         (knot-hash2 "1,2,4")
+         "63960835bcdc130f0b66d7ff4f6a5a8e")))
+
   (testing "Input data part 1"
     (is (=
          (knot-hash 256 (-> "../day10/input.txt"

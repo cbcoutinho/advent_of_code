@@ -1,14 +1,23 @@
 (ns aoc-clj.day10
-  (:require [aoc-clj.day10.util :as util]))
+  (:require [aoc-clj.day10.util :as util]
+            [clojure.string :as s]))
 
-(defn my-subvec
-  "Create a subvec that wraps around the original vector"
-  [v start end]
-  (map
-   #(nth v (mod % (count v)))
-   (range start end)))
+(defn string2coll
+  "Converts a string to a collection of "
+  [string]
+  (into [] (butlast
+            (reduce
+             (fn [acc x]
+               (conj
+                acc
+                (-> x
+                    read-string
+                    util/num2hx)
+                (util/num2hx (int \,))))
+             []
+             (s/split string #",")))))
 
-(defn reverse-partition
+(defn next-knot
   "Calcuate the next 'knot' in the sequence by reversing the
   elements in a subset of the vector"
   [rng pos len]
@@ -21,7 +30,7 @@
     (->> (range pos (+ pos len))   ; Create a simple index vector
          (map #(mod % (count rng)))) ; And change the index to wrap around
     (-> rng                        ; Take the original vector
-        (my-subvec                 ; Take a subvector of it
+        (util/my-subvec                 ; Take a subvector of it
          pos
          (+ pos len))
         reverse))))                ; And reverse the elements
@@ -45,3 +54,7 @@
     (*
      (first knot)
      (second knot))))
+
+(defn knot-hash2
+  "Calculates the cryptographic knot-hash for part 2"
+  [input])
