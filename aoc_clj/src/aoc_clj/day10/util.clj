@@ -1,9 +1,16 @@
 (ns aoc-clj.day10.util)
 
 (defn num2hx
-  "Converts a number (base 10) to a hexadecimal (base 16)"
+  "Converts a number (base 10) to a hexadecimal (base 16) string.
+  Optionally pads the string with a zero if only a single letter, due
+  to being less than 16
+
+   1 -> \"01\"
+  15 -> \"0f\"
+  16 -> \"10\""
   [n]
-  (Integer/toString n 16))
+  (cond->> (Integer/toString n 16)
+    (< n 16) (str "0")))
 
 (defn my-subvec
   "Create a subvec that wraps around the original vector"

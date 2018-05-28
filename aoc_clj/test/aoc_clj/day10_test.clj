@@ -53,4 +53,13 @@
                              (s/split #",")
                              ((fn [coll] (map #(Integer/parseInt %) coll)))
                              vec))
-         1935))))
+         1935)))
+
+  (testing "Input data part 2"
+    (is (=
+         (knot-hash2 256 (-> "../day10/input.txt"
+                             slurp
+                             s/split-lines
+                             first
+                             parse-input))
+         "dc7e7dee710d4c7201ce42713e6b8359"))))

@@ -94,4 +94,6 @@
       first
       sparse-to-dense
       ((fn [coll]
-         (apply str (map util/num2hx coll))))))
+         (->> coll
+              (map util/num2hx)
+              (apply str))))))
