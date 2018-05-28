@@ -11,3 +11,27 @@
   (map
    #(nth v (mod % (count v)))
    (range start end)))
+
+(defn string-to-ints
+  "Converts a string to a vector of integers. Characters are converted
+  to their respective ASCII codes
+
+  \"1,2,3\" -> [49 44 50 44 51]"
+  [string]
+  (->> string      ; Start with the input string
+       (map int)   ; Convert each character to an integer
+       (into []))) ; Mold results into a vector
+
+(defn append-vec
+  "Appends a vector of integers to a collection.
+  Part 2 of day 10 requires that we append a random vector of elements
+  to the input collection.
+
+  [1 2 3] -> [1 2 3 17 31 73 47 23]"
+  ([coll] ; If no vector is supplied, use the default
+   (append-vec coll [17 31 73 47 23]))
+  ([coll app-vec]
+   (reduce     ; Use reduce to append the vector element-by-element
+    conj       ; Use conj to append to the input vector
+    coll       ; Input collection
+    app-vec))) ; Append each element of this vector
