@@ -2,20 +2,17 @@
   (:require [aoc-clj.day10.util :as util]
             [clojure.string :as s]))
 
-(defn string2coll
-  "Converts a string to a collection of "
+(defn parse-input
+  "Converts a string into a collection of integer lengths. Characters
+  are converted to their integer ASCII codes"
   [string]
-  (into [] (butlast
-            (reduce
-             (fn [acc x]
-               (conj
-                acc
-                (-> x
-                    read-string
-                    util/num2hx)
-                (util/num2hx (int \,))))
-             []
-             (s/split string #",")))))
+  (reduce             ; Use reduce to append the vector element-by-element
+   conj               ; Use conj to append to the input vector
+   (->> string        ; Start with the input string
+        (map int)     ; Convert each character to an integer
+        (into []))    ; Mold results into a vector
+   [17 31 73 47 23])) ; Append each element of this vector
+
 
 (defn next-knot
   "Calcuate the next 'knot' in the sequence by reversing the

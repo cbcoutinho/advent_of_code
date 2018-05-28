@@ -25,6 +25,9 @@
 
   (testing "Example for part2 from README"
     (is (=
+         (parse-input "1,2,3")
+         [49 44 50 44 51 17 31 73 47 23]))
+    (is (=
          (knot-hash2 "")
          "a2582a3a0e66e6e86e3812dcb672a272"))
     (is (=
