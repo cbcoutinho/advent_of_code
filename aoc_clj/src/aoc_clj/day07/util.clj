@@ -1,6 +1,5 @@
 (ns aoc-clj.day07.util
-  (:require [clojure.string :as s]
-            [aoc-clj.core :as core]))
+  (:require [clojure.string :as s]))
 
 (defn get-children
   [coll node]

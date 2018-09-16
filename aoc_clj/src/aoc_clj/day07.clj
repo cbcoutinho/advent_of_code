@@ -1,8 +1,7 @@
 (ns aoc-clj.day07
-  (:require [clojure.string :as s]
-            [clojure.set :refer [difference]]
-            [aoc-clj.core :as core]
-            [aoc-clj.day07.util :as util]))
+  (:require [aoc-clj.core :as core]
+            [aoc-clj.day07.util :as util]
+            [clojure.set :refer [difference]]))
 
 (defn parse-file
   "Parse file into a collection of hash-maps"

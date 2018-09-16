@@ -1,6 +1,5 @@
 (ns aoc-clj.day05
-  (:require [clojure.string :as s]
-            [aoc-clj.core :as core]))
+  (:require [aoc-clj.core :as core]))
 
 (defn parse-file
   "Parses file into list of numbers"

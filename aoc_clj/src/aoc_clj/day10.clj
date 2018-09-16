@@ -1,6 +1,5 @@
 (ns aoc-clj.day10
-  (:require [aoc-clj.day10.util :as util]
-            [clojure.string :as s]))
+  (:require [aoc-clj.day10.util :as util]))
 
 (defn parse-input
   "Converts a string into a collection of integer lengths. Characters

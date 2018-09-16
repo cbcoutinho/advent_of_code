@@ -1,6 +1,4 @@
-(ns aoc-clj.day09
-  (:require [aoc-clj.core :as core]
-            [clojure.string :as s]))
+(ns aoc-clj.day09)
 
 (defn iterate-chars
   [input]

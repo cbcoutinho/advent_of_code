@@ -1,6 +1,6 @@
 (ns aoc-clj.day04
-  (:require [clojure.string :as s]
-            [aoc-clj.core :as core]))
+  (:require [aoc-clj.core :as core]
+            [clojure.string :as s]))
 
 (defn parse-file
   [filename]
