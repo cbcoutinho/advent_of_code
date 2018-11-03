@@ -1,6 +1,6 @@
 (ns aoc-clj.day04-test
-  (:require [clojure.test :refer :all]
-            [aoc-clj.day04 :refer :all]))
+  (:require [aoc-clj.day04 :refer :all]
+            [clojure.test :refer :all]))
 
 (deftest readme-test
   (testing "Checks passphrase validity for passphrases from the README"

@@ -1,6 +1,6 @@
 (ns aoc-clj.day06-test
-  (:require [clojure.test :refer :all]
-            [aoc-clj.day06 :refer :all]))
+  (:require [aoc-clj.day06 :refer :all]
+            [clojure.test :refer :all]))
 
 (deftest readme-test
   (testing "Test readme example."

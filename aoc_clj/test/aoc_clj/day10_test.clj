@@ -1,8 +1,8 @@
 (ns aoc-clj.day10-test
-  (:require [clojure.test :refer :all]
-            [aoc-clj.day10 :refer :all]
+  (:require [aoc-clj.day10 :refer :all]
             [aoc-clj.day10.util :as util]
-            [clojure.string :as s]))
+            [clojure.string :as s]
+            [clojure.test :refer :all]))
 
 (deftest readme-test
   (testing "Individual steps from README"

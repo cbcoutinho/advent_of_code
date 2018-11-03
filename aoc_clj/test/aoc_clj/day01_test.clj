@@ -1,6 +1,6 @@
 (ns aoc-clj.day01-test
-  (:require [clojure.test :refer :all]
-            [aoc-clj.day01 :refer :all]))
+  (:require [aoc-clj.day01 :refer :all]
+            [clojure.test :refer :all]))
 
 (deftest captcha1
   (testing "Part 1 of day01"
